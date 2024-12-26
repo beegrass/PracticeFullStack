@@ -43,6 +43,21 @@ public class ContactService {
 
     public void deleteContact(Contact contact) {
         // Assignment
+        log.info("Deleting contact with id: {}", contact.getId());
+
+        // Check if contact has photo and delete if it does
+        if (contact.getPhotoUrl() != null && !contact.getPhotoUrl().isEmpty()) {
+            try {
+                String filename = contact.getPhotoUrl().substring(contact.getPhotoUrl().lastIndexOf("/") + 1);
+                Path photoPath = Paths.get(PHOTO_DIRECTORY).resolve(filename).toAbsolutePath().normalize();
+                Files.deleteIfExists(photoPath);
+                log.info("Deleted photo file: {}", filename);
+            } catch (Exception e) {
+                log.error("Error deleting photo for contact with id: {}", contact.getId(), e);
+            }
+        }
+
+        contactRepo.delete(contact);
     }
 
     public String uploadPhoto(String id, MultipartFile file) {

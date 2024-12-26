@@ -5,6 +5,7 @@ import com.practice.contactapi.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,5 +55,11 @@ public class ContactController {
     @GetMapping(path = "/image/{filename}", produces = { IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE })
     public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
         return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + filename));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Contact> deleteContact(@PathVariable(value = "id") String id) {
+        contactService.deleteContact(contactService.getContact(id));
+        return ResponseEntity.noContent().build();
     }
 }
