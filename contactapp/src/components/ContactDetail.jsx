@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { deleteContact, getContact } from "../api/ContactService";
 
 const ContactDetail = ({ updateContact, updateImage }) => {
@@ -15,8 +15,6 @@ const ContactDetail = ({ updateContact, updateImage }) => {
     status: "",
     photoUrl: "",
   });
-
-  const nav = useNavigate();
 
   const { id } = useParams();
 
@@ -61,16 +59,15 @@ const ContactDetail = ({ updateContact, updateImage }) => {
 
   const onDeleteContact = async () => {
     try {
-        await deleteContact(contact.id);
-        nav("/contacts", { state: { refresh: true } }); // Pass a flag to trigger refresh
+      await deleteContact(contact.id);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
     fetchContact(id);
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -171,7 +168,7 @@ const ContactDetail = ({ updateContact, updateImage }) => {
                   onClick={onDeleteContact}
                   className="btn btn-danger"
                 >
-                  Delete
+                  <a href="/contacts">Delete</a>
                 </button>
               </div>
             </form>

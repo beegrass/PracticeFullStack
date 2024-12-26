@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import ContactList from "./components/ContactList";
 import { getContacts, saveContact, udpatePhoto } from "./api/ContactService";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ContactDetail from "./components/ContactDetail";
 
 function App() {
@@ -11,7 +11,6 @@ function App() {
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   const [file, setFile] = useState(undefined);
-  const location = useLocation();
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -82,11 +81,8 @@ function App() {
     show ? modalRef.current.showModal() : modalRef.current.close();
 
   useEffect(() => {
-    // Trigger re-fetch if 'refresh' flag is set in the location state
-    if (location.state?.refresh) {
-      getAllContacts();
-    }
-  }, [location.state]);
+    getAllContacts();
+  }, []);
 
   return (
     <>
